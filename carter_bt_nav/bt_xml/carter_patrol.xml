@@ -1,0 +1,29 @@
+<root main_tree_to_execute="CarterPatrol">
+  <BehaviorTree ID="CarterPatrol">
+    <Sequence name="PatrolSequence">
+      <SetBlackboard output_key="goal_1" value="1.0;2.0;0.0"/>
+      <SetBlackboard output_key="goal_2" value="4.0;1.0;0.0"/>
+      <SetBlackboard output_key="goal_3" value="3.0;5.0;0.0"/>
+      <SetBlackboard output_key="goal_4" value="0.0;0.0;0.0"/>
+      
+      <Fallback name="PatrolFallback">
+        <Sequence name="VisitAllPoints">
+          <SubTree ID="NavigateWithReset" target="goal_1"/>
+          <SubTree ID="NavigateWithReset" target="goal_2"/>
+          <SubTree ID="NavigateWithReset" target="goal_3"/>
+          <SubTree ID="NavigateWithReset" target="goal_4"/>
+        </Sequence>
+        <RetryUntilSuccessful num_attempts="3">
+          <GoHome name="ReturnToHome"/>
+        </RetryUntilSuccessful>
+      </Fallback>
+    </Sequence>
+  </BehaviorTree>
+  
+  <BehaviorTree ID="NavigateWithReset">
+    <Sequence name="NavigateSequence">
+      <NavigateToPose goal="{target}"/>
+      <Delay delay_msec="1000"/>
+    </Sequence>
+  </BehaviorTree>
+</root>
